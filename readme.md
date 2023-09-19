@@ -18,7 +18,7 @@
 
 - [x] Usuário nao deve poder se cadastrar com um e-mail duplicado;
 - [x] O usuário nao pode fazer 2 check-ins no mesmo dia;
-- [ ] O usuário nao pode fazer check-in se nao estiver perto (100 metros) da academia;
+- [x] O usuário nao pode fazer check-in se nao estiver perto (100 metros) da academia;
 - [ ] O check-in só pode ser validado até 20 minutos apos ser criado
 - [ ] O check-in só pode ser validado por administradores;
 - [ ] A academia só pode ser cadastrada por administradores;
