@@ -1,16 +1,28 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { CheckInUseCase } from './check-in'
-import { CheckInsRepository } from '@/repositories/checkin-repository'
 import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-checkin-repository'
+import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
+import { Decimal } from '@prisma/client/runtime/library'
 
-let checkInsRepository: CheckInsRepository
+let checkInsRepository: InMemoryCheckInsRepository
+let gymsRepository: InMemoryGymsRepository
 let sut: CheckInUseCase
 
 describe('Authenticate use case', () => {
   beforeEach(() => {
     checkInsRepository = new InMemoryCheckInsRepository()
-    sut = new CheckInUseCase(checkInsRepository)
+    gymsRepository = new InMemoryGymsRepository()
+    sut = new CheckInUseCase(checkInsRepository, gymsRepository)
     // sut = system under test
+
+    gymsRepository.items.push({
+      id: 'gym-id',
+      title: 'Academia Javascript',
+      description: '',
+      phone: '',
+      latitude: new Decimal(0),
+      longitude: new Decimal(0),
+    })
 
     vi.useFakeTimers()
   })
@@ -23,6 +35,8 @@ describe('Authenticate use case', () => {
     const { checkIn } = await sut.execute({
       gymId: 'gym-id',
       userId: 'user-id',
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
@@ -34,12 +48,16 @@ describe('Authenticate use case', () => {
     await sut.execute({
       gymId: 'gym-id',
       userId: 'user-id',
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     expect(() =>
       sut.execute({
         gymId: 'gym-id',
         userId: 'user-id',
+        userLatitude: 0,
+        userLongitude: 0,
       }),
     ).rejects.toBeInstanceOf(Error)
   })
@@ -50,6 +68,8 @@ describe('Authenticate use case', () => {
     await sut.execute({
       gymId: 'gym-id',
       userId: 'user-id',
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     vi.setSystemTime(new Date(2022, 0, 21, 8, 0, 0))
@@ -57,6 +77,8 @@ describe('Authenticate use case', () => {
     const { checkIn } = await sut.execute({
       gymId: 'gym-id',
       userId: 'user-id',
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
