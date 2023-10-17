@@ -45,6 +45,6 @@ describe('Check-in Metrics (e2e)', async () => {
       .send()
 
     expect(response.statusCode).toEqual(200)
-    expect(response.body.checkIns).toEqual(2)
+    expect(response.body.checkInsCount).toEqual(2)
   })
 })
